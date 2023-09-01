@@ -1,4 +1,4 @@
-## Ссылка на репозиторий проекта https://github.com/paksasha76/express-mesto-gha
+## Ссылка на репозиторий проекта https://github.com/paksasha76/express-mesto-gha.git
 
 ## Запуск проекта
 
