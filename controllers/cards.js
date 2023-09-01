@@ -8,7 +8,7 @@ module.exports.createCard = async (req, res) => {
     return res.send(card);
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при создании карточки: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
   }
 };
 
@@ -17,7 +17,7 @@ module.exports.getCards = async (req, res) => {
     const cards = await Card.find({});
     res.send(cards);
   } catch (err) {
-    res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при получении списка карточек: ${err}` });
+    res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
   }
 };
 
@@ -31,7 +31,7 @@ module.exports.delCardId = async (req, res) => {
     return res.send(card);
   } catch (err) {
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при удалении карточки: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
   }
 };
 
@@ -40,7 +40,7 @@ module.exports.likeCard = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
       cardId,
-      { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+      { $addToSet: { likes: req.user._id } },
       { new: true },
     );
     if (!card) {
@@ -50,7 +50,7 @@ module.exports.likeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при лайке карточки: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
   }
 };
 
@@ -59,7 +59,7 @@ module.exports.dislikeCard = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
       cardId,
-      { $pull: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+      { $pull: { likes: req.user._id } },
       { new: true },
     );
     if (!card) {
@@ -69,6 +69,6 @@ module.exports.dislikeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при дизлайке карточки: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
   }
 };
