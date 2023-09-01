@@ -8,9 +8,9 @@ const { NOT_FOUND_CODE } = require('./utils');
 const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true, // новый MongoDB-парсер
-  useUnifiedTopology: true, // новый движок MongoDB
-  family: 4, // версия IP для подключения
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  family: 4,
 });
 
 const app = express();
