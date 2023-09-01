@@ -1,36 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const usersRouter = require('./routes/users');
+const cardsRouter = require('./routes/cards');
+const { NOT_FOUND_CODE } = require('./utils');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/testdb' } = process.env;
+const { PORT = 3000 } = process.env;
+
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true, // новый MongoDB-парсер
+  useUnifiedTopology: true, // новый движок MongoDB
+  family: 4, // версия IP для подключения
+});
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-mongoose.connect(DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   req.user = {
-    _id: '64ecae2e6df5f6731485b38a',
+    _id: '64ef7d413dd70b509711ea40',
   };
-
   next();
 });
-app.use('/', require('./routes/index'));
-
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'не найдено' });
-});
-
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
-  next();
-});
+app.use('/users', usersRouter);
+app.use('/cards', cardsRouter);
+app.use('/', (req, res) => res.status(NOT_FOUND_CODE).send({ message: 'Запрашиваемый адрес не найден' }));
 
 app.listen(PORT);
