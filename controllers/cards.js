@@ -8,7 +8,7 @@ module.exports.createCard = async (req, res) => {
     return res.send(card);
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -17,7 +17,7 @@ module.exports.getCards = async (req, res) => {
     const cards = await Card.find({});
     res.send(cards);
   } catch (err) {
-    res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
+    res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -31,7 +31,7 @@ module.exports.deleteCard = async (req, res) => {
     return res.send(card);
   } catch (err) {
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -50,7 +50,7 @@ module.exports.likeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -69,6 +69,6 @@ module.exports.dislikeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка на стороне сервера: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };

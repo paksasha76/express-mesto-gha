@@ -8,7 +8,7 @@ module.exports.createUser = async (req, res) => {
     return res.send(user);
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при создании пользователя: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -17,7 +17,7 @@ module.exports.getUsers = async (req, res) => {
     const users = await User.find({});
     res.send(users);
   } catch (err) {
-    res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при получении списка пользователей: ${err}` });
+    res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -31,7 +31,7 @@ module.exports.getUserId = async (req, res) => {
     return res.send(user);
   } catch (err) {
     if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при получении пользователя: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -49,7 +49,7 @@ module.exports.updateUserProfile = async (req, res) => {
     return res.send(user);
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при обновлении данных пользователя: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -67,6 +67,6 @@ module.exports.updateUserAvatar = async (req, res) => {
     return res.send(user);
   } catch (err) {
     if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: `Ошибка при обновлении данных пользователя: ${err}` });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
