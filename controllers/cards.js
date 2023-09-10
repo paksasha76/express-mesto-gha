@@ -1,74 +1,80 @@
-const Card = require('../models/card');
-const { BAD_REQUEST_CODE, NOT_FOUND_CODE, SERVER_ERROR_CODE } = require('../utils');
+const { CREATED_CODE } = require('../constants/constants');
+const ForbiddenError = require('../errors/ForbiddenError');
+const Card = require('../models/cards');
 
-module.exports.createCard = async (req, res) => {
+const getCards = (req, res, next) => {
+  Card.find()
+    .populate(['owner', 'likes'])
+    .then((cards) => {
+      res.send({ data: cards });
+    })
+    .catch(next);
+};
+
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
-  try {
-    const card = await Card.create({ name, link, owner: req.user });
-    return res.send(card);
-  } catch (err) {
-    if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
-  }
+  const ownerId = req.user._id;
+
+  Card.create({ name, link, owner: ownerId })
+    .then((newCard) => {
+      res.status(CREATED_CODE).send({ data: newCard });
+    })
+    .catch(next);
 };
 
-module.exports.getCards = async (req, res) => {
-  try {
-    const cards = await Card.find({});
-    res.send(cards);
-  } catch (err) {
-    res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
-  }
-};
-
-module.exports.deleteCard = async (req, res) => {
+const deleteСard = (req, res, next) => {
   const { cardId } = req.params;
-  try {
-    const card = await Card.findByIdAndRemove(cardId);
-    if (!card) {
-      return res.status(NOT_FOUND_CODE).send({ message: 'Запрашиваемая карточка не найдена' });
-    }
-    return res.send(card);
-  } catch (err) {
-    if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
-  }
+  const userId = req.user._id;
+
+  Card.findById(cardId)
+    .orFail()
+    .populate(['owner', 'likes'])
+    // eslint-disable-next-line consistent-return
+    .then((card) => {
+      const ownerId = card.owner._id.toString();
+
+      if (userId === ownerId) {
+        Card.findByIdAndRemove(cardId)
+          .orFail()
+          .then(() => {
+            res.send({ message: 'Карточка удалена' });
+          })
+          .catch(next);
+      } else {
+        return next(new ForbiddenError('Нет прав для удаления этой карточки'));
+      }
+    })
+    .catch(next);
 };
 
-module.exports.likeCard = async (req, res) => {
+const likeCard = (req, res, next) => {
+  const userId = req.user._id;
   const { cardId } = req.params;
-  try {
-    const card = await Card.findByIdAndUpdate(
-      cardId,
-      { $addToSet: { likes: req.user._id } },
-      { new: true },
-    );
-    if (!card) {
-      return res.status(NOT_FOUND_CODE).send({ message: 'Запрашиваемая карточка не найдена' });
-    }
-    return res.send(card);
-  } catch (err) {
-    if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
-  }
+
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: userId } }, { new: true })
+    .orFail()
+    .then((card) => {
+      res.send({ data: card });
+    })
+    .catch(next);
 };
 
-module.exports.dislikeCard = async (req, res) => {
+const dislikeCard = (req, res, next) => {
+  const userId = req.user._id;
   const { cardId } = req.params;
-  try {
-    const card = await Card.findByIdAndUpdate(
-      cardId,
-      { $pull: { likes: req.user._id } },
-      { new: true },
-    );
-    if (!card) {
-      return res.status(NOT_FOUND_CODE).send({ message: 'Запрашиваемая карточка не найдена' });
-    }
-    return res.send(card);
-  } catch (err) {
-    if (err.name === 'ValidationError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    if (err.name === 'CastError') return res.status(BAD_REQUEST_CODE).send({ message: 'Данные переданы не корректно' });
-    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
-  }
+
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: userId } }, { new: true })
+    .orFail()
+    .then((card) => {
+      res.send({ data: card });
+    })
+    .catch(next);
+};
+
+module.exports = {
+  getCards,
+  createCard,
+  deleteСard,
+  likeCard,
+  dislikeCard,
 };
