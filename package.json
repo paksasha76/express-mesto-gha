@@ -1,13 +1,12 @@
 {
   "name": "express-mesto-gha",
   "version": "1.0.0",
-  "description": "# Проект Mesto",
+  "description": "Проект Mesto",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "mongod & nodemon app.js"
   },
   "keywords": [],
   "author": "Aleksandr",
