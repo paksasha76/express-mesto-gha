@@ -10,7 +10,6 @@ const {
   dislikeCard,
 } = require('../controllers/cards');
 
-// card routes
 const cardRouter = express.Router();
 
 cardRouter.get('/cards', auth, getCards);
