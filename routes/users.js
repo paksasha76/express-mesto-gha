@@ -6,7 +6,7 @@ const {
   getUsers,
   getUser,
   getUserMe,
-  updateUserData,
+  updateDescription,
   updateAvatar,
 } = require('../controllers/users');
 
@@ -27,7 +27,7 @@ userRouter.patch('/users/me', auth, celebrate({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
-}), updateUserData);
+}), updateDescription);
 
 userRouter.patch('/users/me/avatar', auth, celebrate({
   body: Joi.object().keys({
