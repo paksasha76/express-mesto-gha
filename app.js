@@ -3,10 +3,10 @@ const rateLimit = require('express-rate-limit');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 const express = require('express');
@@ -27,8 +27,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 // utils
 app.use(express.json());
-app.use(helmet()); // USE HELMET
-app.use(limiter); // USE LIMITER
+app.use(helmet());
+app.use(limiter);
 
 // authorization
 app.post('/signin', celebrate({
