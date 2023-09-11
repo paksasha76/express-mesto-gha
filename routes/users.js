@@ -10,6 +10,7 @@ const {
   updateUserAvatar,
 } = require('../controllers/users');
 
+// user routes
 const userRouter = express.Router();
 
 userRouter.get('/users', auth, getUsers);
