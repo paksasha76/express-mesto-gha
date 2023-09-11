@@ -1,3 +1,5 @@
+const express = require('express');
+const mongoose = require('mongoose');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { celebrate, Joi, errors } = require('celebrate');
@@ -8,9 +10,6 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
-
-const express = require('express');
-const mongoose = require('mongoose');
 
 const { auth } = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
