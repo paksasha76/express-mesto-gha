@@ -84,7 +84,7 @@ const updateUserData = (req, res, next) => {
     });
 };
 
-const updateUserAvatar = (req, res, next) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const userId = req.user._id;
 
@@ -132,7 +132,7 @@ module.exports = {
   getUser,
   getUserMe,
   updateUserData,
-  updateUserAvatar,
+  updateAvatar,
   createUser,
   login,
 };

@@ -7,7 +7,7 @@ const {
   getUser,
   getUserMe,
   updateUserData,
-  updateUserAvatar,
+  updateAvatar,
 } = require('../controllers/users');
 
 const userRouter = express.Router();
@@ -33,6 +33,6 @@ userRouter.patch('/users/me/avatar', auth, celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required().regex(URL_REGULAR_EXP),
   }),
-}), updateUserAvatar);
+}), updateAvatar);
 
 module.exports = { userRouter };
