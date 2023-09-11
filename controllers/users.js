@@ -103,7 +103,7 @@ const login = (req, res, next) => {
             return next(new AuthorizationError('Неправильные почта или пароль'));
           }
 
-          const token = jwt.sign({ _id: user._id }, 'SECRET_KEY', { expiresIn: '7d' }); // HARDCODE SECRET_KEY
+          const token = jwt.sign({ _id: user._id }, 'SECRET_KEY', { expiresIn: '7d' });
           // eslint-disable-next-line consistent-return
           return res.send({ JWT: token });
         });
