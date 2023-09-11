@@ -24,10 +24,12 @@ const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
+// utils
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
 
+// authorization
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -45,12 +47,20 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
+// protected routes with middlewares auth
 app.use(userRouter);
 app.use(cardRouter);
+
+// wrong path
 app.use('*', auth, (req, res, next) => {
   next(errorsHandler('WrongPathError'));
 });
+
+// celebrate error handler
 app.use(errors());
+
+// central error handler
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
