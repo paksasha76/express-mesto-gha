@@ -91,6 +91,7 @@ const login = (req, res, next) => {
   } = req.body;
 
   User.findOne({ email }).select('+password')
+    // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
         return next(new AuthorizationError('Неправильные почта или пароль'));
@@ -103,6 +104,7 @@ const login = (req, res, next) => {
           }
 
           const token = jwt.sign({ _id: user._id }, 'SECRET_KEY', { expiresIn: '7d' });
+          // eslint-disable-next-line consistent-return
           return res.send({ JWT: token });
         });
     })
