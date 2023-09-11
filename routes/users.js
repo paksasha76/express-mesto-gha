@@ -5,7 +5,7 @@ const { URL_REGULAR_EXP } = require('../constants/constants');
 const {
   getUsers,
   getUser,
-  getUserMe,
+  getUserId,
   updateDescription,
   updateAvatar,
 } = require('../controllers/users');
@@ -14,7 +14,7 @@ const userRouter = express.Router();
 
 userRouter.get('/users', auth, getUsers);
 
-userRouter.get('/users/me', auth, getUserMe);
+userRouter.get('/users/me', auth, getUserId);
 
 userRouter.get('/users/:userId', auth, celebrate({
   params: Joi.object().keys({

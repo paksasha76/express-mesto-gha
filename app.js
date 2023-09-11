@@ -60,11 +60,9 @@ app.use((err, req, res, next) => {
     .status(statusCode)
     .send({
       message: statusCode === 500
-        ? 'Произошла неизвестная ошибка на сервере'
+        ? 'На сервере произошла ошибка'
         : message,
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`Сервер открыт на порту: ${PORT}`);
-});
+app.listen(PORT);

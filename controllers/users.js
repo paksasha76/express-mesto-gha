@@ -14,7 +14,7 @@ const getUsers = (req, res, next) => {
     });
 };
 
-const getUserMe = (req, res, next) => {
+const getUserId = (req, res, next) => {
   const userId = req.user._id;
   User.findById(userId)
     .orFail()
@@ -130,7 +130,7 @@ const login = (req, res, next) => {
 module.exports = {
   getUsers,
   getUser,
-  getUserMe,
+  getUserId,
   updateDescription,
   updateAvatar,
   createUser,
