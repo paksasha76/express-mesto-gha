@@ -3,7 +3,6 @@ const ConflictError = require('./ConflictError');
 const ForbiddenError = require('./ForbiddenError');
 const NotFoundError = require('./NotFoundError');
 const UnauthorizedError = require('./UnauthorizedError');
-const ServerError = require('./ServerError');
 
 // eslint-disable-next-line consistent-return
 const errorsHandler = (err) => {
@@ -38,8 +37,6 @@ const errorsHandler = (err) => {
   if (err.code === 11000) {
     return new ConflictError('Пользователь с таким E-mail уже существует');
   }
-
-  return new ServerError('Произошла неизвестная ошибка на сервере');
 };
 
 module.exports = errorsHandler;
